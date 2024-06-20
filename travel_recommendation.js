@@ -1,5 +1,6 @@
 const btnSearch = document.getElementById("btnSearch");
 const searchBar = document.getElementById('searchInput');
+const btnClear = document.getElementById('btnClear');
 const beachVariations = ['beaches', 'beach', 'beachs'];
 const countryVariations = ['country', 'countries', 'countrys', 'countries', 'county'];
 const templeVariations = ['temple', 'tempel', 'temples', 'tempels', 'templs'];
@@ -52,17 +53,26 @@ function generateOutput(output, switchOutput){
     if(switchOutput==2){
         outputDiv.innerHTML = '<h2>Search Results</h2>';
         for(const item of output){
-            console.log(item.name);
             outputDiv.innerHTML += '<h3>'+item.name+'</h3>'
             outputDiv.innerHTML += '<img src="'+item.imageUrl+'" width = "400px">';
             outputDiv.innerHTML += '<p>'+item.description+'</p>'
             outputDiv.innerHTML += '<br>';
         }
     }else if(switchOutput == 1){
-        
+        outputDiv.innerHTML = '<h2>Search Results</h2>';
+        for(const country of output){
+            outputDiv.innerHTML += '<h3>'+country.name+'</h3>'
+            console.log(country);
+            for(const city of country.cities){
+                outputDiv.innerHTML += '<h4>'+city.name+'</h4>'
+                outputDiv.innerHTML += '<img src="'+city.imageUrl+'" width = "400px">';
+                outputDiv.innerHTML += '<p>'+city.description+'</p>'
+                outputDiv.innerHTML += '<br>';
+            }
+        }
     }
     else{
-        outputDiv.innerHTML = '<h3>output</h3>';
+        outputDiv.innerHTML = '<h3>'+output+'</h3>';
     }
 
 }
@@ -74,5 +84,14 @@ function checkKeyPressed(evt) {
     }
 }
 
+function clearOutput(){
+    const outputDiv = document.getElementById('output');
+    outputDiv.innerHTML="";
+    searchBar.value = "";
+}
+
+
+
 btnSearch.addEventListener('click', searchDestinations);
 searchBar.addEventListener('keypress',checkKeyPressed,false);
+btnClear.addEventListener('click', clearOutput);
