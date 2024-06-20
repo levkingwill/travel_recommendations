@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="./travel_recommendation.css">
+</head>
+<body>
+  <nav class="nav"><h1>Travel Website</h1>
+    <ul>
+      <li><a href="./travel_recommendation.html" id="home">Home </a></li>
+      <li><a href="./about_us.html" id="contact">About Us </a></li>
+      <li><a href="./contact_us.html" id="contact">Contact Us </a></li>
+    </ul>
+  </nav>
+  <div class="social">
+    <ul>
+       <li><a href="./contact_us.html" id="social"><img src="images/whatsapp.png" ></a></li>
+       <li><a href="./contact_us.html" id="social"><img src="images/twitter.png"></a></li>
+       <li><a href="./contact_us.html" id="social"><img src="images/insta.png"></a></li>
+       <li><a href="./contact_us.html" id="social"><img src="images/pinteres.png"></a></li>
+    </ul>
+   </div>
+  <div class="us">
+    <h1>Contact Us</h1>
+      <div class="text-child" >
+      <form id="contactForm">
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" onclick="thankyou()">Submit</button>
+      </form>
+  </div>
+</body>
+</html>
