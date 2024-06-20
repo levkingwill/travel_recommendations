@@ -4,6 +4,9 @@ const btnClear = document.getElementById('btnClear');
 const beachVariations = ['beaches', 'beach', 'beachs'];
 const countryVariations = ['country', 'countries', 'countrys', 'countries', 'county'];
 const templeVariations = ['temple', 'tempel', 'temples', 'tempels', 'templs'];
+const ausVariations = ['austrailia', 'aus', 'austria','australia'];
+const japVariations = ['japan','japn','jap'];
+const brazilVariations = ['bra','brazil', 'brazl','brazel'];
 
 function searchDestinations(){
     input = document.getElementById('searchInput').value.toLowerCase();
@@ -15,6 +18,15 @@ function searchDestinations(){
     }
     else if(beachVariations.find(item => item == input)){
         input = 'beaches';
+    }
+    else if(ausVariations.find(item => item == input)){
+        input = 'australia';
+    }
+    else if(japVariations.find(item => item == input)){
+        input = 'japan';
+    }
+    else if(brazilVariations.find(item => item == input)){
+        input = 'brazil';
     }
 
     fetch('travel_recommendation_api.json')
@@ -28,6 +40,7 @@ function searchDestinations(){
 
 function filterData(data, input){
     switchOutput=0;
+    output='Nothing Found';
     switch(input){
         case 'temples':
             output = data.temples;
@@ -42,18 +55,36 @@ function filterData(data, input){
             switchOutput=2;
         break;
         default:
-            output = 'Nothing found';
+            output = data.countries;
+            output = getCountrySpecificData(output, input);
+            console.log(output);
+            if(output != 'Nothing Found'){
+                switchOutput = 3;
+            }
+            break;
     }
     generateOutput(output, switchOutput);
 }
 
-function generateOutput(output, switchOutput){
-    possibleTimeZones = ['','America','Asia','Africa'];
+function getCountrySpecificData(countries, input){
+    for(const country of countries){
+        console.log(country.name);
+        if(country.name.toLowerCase() == input){
+            output = country;
+            break;
+        }else{
+            output = 'Nothing Found';
+        }
+    }
+    console.log(output);
+    return output;
 
-    cityTime = '';
-    const outputDiv = document.getElementById('output');
+}
+
+function generateOutput(output, switchOutput){
+    outputDiv = document.getElementById('output');
+    outputDiv.innerHTML = '<h2>Search Results</h2>';
     if(switchOutput==2){
-        outputDiv.innerHTML = '<h2>Search Results</h2>';
         for(const item of output){
             outputDiv.innerHTML += '<h3>'+item.name+'</h3>'
             outputDiv.innerHTML += '<img src="'+item.imageUrl+'" width = "400px">';
@@ -61,36 +92,43 @@ function generateOutput(output, switchOutput){
             outputDiv.innerHTML += '<br>';
         }
     }else if(switchOutput == 1){
-        outputDiv.innerHTML = '<h2>Search Results</h2>';
         for(const country of output){
             outputDiv.innerHTML += '<h3>'+country.name+'</h3>'
 
-            //find time local to the city
-            for(const city of country.cities){
-                possibleTimeZones[0] = country.name
-                locationString = country.name.replaceAll(' ','_');
-                if((cityTime=findTimeZone(locationString)) == 'No Time Zone Found'){
-                    for(zone in possibleTimeZones){
-                        locationString = (possibleTimeZones[zone]+'/'+(city.name.split(',')[0])).replaceAll(' ','_');
-                        cityTime=findTimeZone(locationString);
-                        if(cityTime != 'No Time Zone Found'){
-                            break;
-                        }
-                    }
-                }
-
-                outputDiv.innerHTML += '<h4>'+city.name+'</h4>'
-                outputDiv.innerHTML += '<h5>Current Time: '+cityTime+'</h5>'
-                outputDiv.innerHTML += '<img src="'+city.imageUrl+'" width = "400px">';
-                outputDiv.innerHTML += '<p>'+city.description+'</p>'
-                outputDiv.innerHTML += '<br>';
-            }
+            outputDiv = buildCityHTML(country,outputDiv);
         }
+    }else if(switchOutput == 3){
+        outputDiv = buildCityHTML(output, outputDiv);
     }
     else{
         outputDiv.innerHTML = '<h3>'+output+'</h3>';
     }
 
+}
+
+function buildCityHTML(country, outputDiv){
+    possibleTimeZones = ['','America','Asia','Africa'];
+    cityTime = '';
+    for(const city of country.cities){
+        possibleTimeZones[0] = country.name
+        locationString = country.name.replaceAll(' ','_');
+        if((cityTime=findTimeZone(locationString)) == 'No Time Zone Found'){
+            for(zone in possibleTimeZones){
+                locationString = (possibleTimeZones[zone]+'/'+(city.name.split(',')[0])).replaceAll(' ','_');
+                cityTime=findTimeZone(locationString);
+                if(cityTime != 'No Time Zone Found'){
+                    break;
+                }
+            }
+        }
+
+        outputDiv.innerHTML += '<h4>'+city.name+'</h4>'
+        outputDiv.innerHTML += '<h5>Current Time: '+cityTime+'</h5>'
+        outputDiv.innerHTML += '<img src="'+city.imageUrl+'" width = "400px">';
+        outputDiv.innerHTML += '<p>'+city.description+'</p>'
+        outputDiv.innerHTML += '<br>';
+    }
+    return outputDiv
 }
 
 function findTimeZone(timeZone){
