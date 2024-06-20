@@ -18,20 +18,53 @@ function searchDestinations(){
 
     fetch('travel_recommendation_api.json')
         .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            const destinations = data.countries.find(item => item.name.toLowerCase == input);
-            if(destinations){
-                console.log(destinations);
-            }else{
-                console.log("No country found by the name: "+input);
-            }
-            
-        })
+        .then(data => filterData(data, input))
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching data.');
+          });
 }
 
 function filterData(data, input){
-    
+    switchOutput=0;
+    switch(input){
+        case 'temples':
+            output = data.temples;
+            switchOutput=2;
+        break;
+        case 'countries':
+            output = data.countries;
+            switchOutput=1;
+        break;
+        case 'beaches':
+            output = data.beaches;
+            switchOutput=2;
+        break;
+        default:
+            output = 'Nothing found';
+    }
+    console.log(output, switchOutput);
+    generateOutput(output, switchOutput);
+}
+
+function generateOutput(output, switchOutput){
+    const outputDiv = document.getElementById('output');
+    if(switchOutput==2){
+        outputDiv.innerHTML = '<h2>Search Results</h2>';
+        for(const item of output){
+            console.log(item.name);
+            outputDiv.innerHTML += '<h3>'+item.name+'</h3>'
+            outputDiv.innerHTML += '<img src="'+item.imageUrl+'" width = "400px">';
+            outputDiv.innerHTML += '<p>'+item.description+'</p>'
+            outputDiv.innerHTML += '<br>';
+        }
+    }else if(switchOutput == 1){
+        
+    }
+    else{
+        outputDiv.innerHTML = '<h3>output</h3>';
+    }
+
 }
 
 function checkKeyPressed(evt) {

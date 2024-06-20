@@ -170,3 +170,11 @@
   .tab p{
     font-size: 10px;
   }
+
+  .ouput {
+    margin-top: 30px;
+    float: left;
+    background-color: rgba(117, 204, 245, 0.705);
+    padding: 5px;
+    -moz-border-radius: 8px; -webkit-border-radius: 8px; -khtml-border-radius: 8px; border-radius: 8px; 
+  }
