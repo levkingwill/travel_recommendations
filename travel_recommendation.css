@@ -100,6 +100,7 @@
     margin-left: 10%;
     padding: 15px 8px;
     -moz-border-radius: 8px; -webkit-border-radius: 8px; -khtml-border-radius: 8px; border-radius: 8px; 
+    min-width: 300px;
   }
 
   .text p{
@@ -115,4 +116,32 @@
     margin-right: 63%;
     font-size: 72px;
     color: rgb(0, 0, 0);
+  }
+
+  .us{
+    float: left;
+    margin-top: 15px;
+  }
+
+  .us h1 {
+    margin-left: 10%;
+    margin-right: 63%;
+    color: rgb(0, 0, 0);
+  }
+
+  .us input,
+  .us textarea {
+    width: 90%;
+    margin-bottom: 15px;
+    padding: 8px;
+  }
+  .us button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  .us button:hover {
+    background-color: #00b336;
   }
