@@ -153,7 +153,7 @@ function checkKeyPressed(evt) {
 function clearOutput(){
     const outputDiv = document.getElementById('output');
     outputDiv.innerHTML="";
-    searchBar.value = "";
+    searchBar.value = ""; 
 }
 
 
